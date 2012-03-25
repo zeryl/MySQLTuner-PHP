@@ -22,7 +22,13 @@ $opts = array(
 	'pass' => false,
 	'skipsize' => false,
 	'checkversion' => false,
+	'help' => false,
 );
 
+// Load our options from either $_REQUEST, or from command line
 loadOpts();
-print_r($opts);
+
+if($opts['help'] !== false) {
+	echo(showUsage());
+	exit(0);
+}

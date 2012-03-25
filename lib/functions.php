@@ -171,3 +171,42 @@ function loadOpts() {
 		}
 	}
 }
+
+/**
+ * Show usage information then exit
+ * @return string
+ */
+function showUsage() {
+	global $version;
+	return("   MySQLTuner $version - MySQL High Performance Tuning Script" . getLineEnding() .
+		'   Bug reports, feature requests, and downloads at https://github.com/zeryl/MySQLTuner-PHP' . getLineEnding() .
+		'   Maintained by Zeryl (lordsaryon@gmail.com) - Licensed under GPL' . getLineEnding() .
+		'   Original by Major Hayden (major@mhtx.net)' . getLineEnding() .
+		getLineEnding() .
+		'   Important Usage Guidelines:' . getLineEnding() .
+		'      To run the script with the default options, run the script without arguments' . getLineEnding() .
+		'      Allow MySQL server to run for at least 24-48 hours before trusting suggestions' . getLineEnding() .
+		'      Some routines may require root level privileges (script will provide warnings)' . getLineEnding() .
+		'      You must provide the remote server\'s total memory when connecting to other servers' . getLineEnding() .
+		getLineEnding() .
+		'   Connection and Authentication' . getLineEnding() .
+		'      --host <hostname>    Connect to a remote host to perform tests (default: localhost)' . getLineEnding() .
+		'      --socket <socket>    Use a different socket for a local connection' . getLineEnding() .
+		'      --port <port>        Port to use for connection (default: 3306)' . getLineEnding() .
+		'      --user <username>    Username to use for authentication' . getLineEnding() .
+		'      --pass <password>    Password to use for authentication' . getLineEnding() .
+		getLineEnding() .
+		'   Performance and Reporting Options' . getLineEnding() .
+		'      --skipsize           Don\'t enumerate tables and their types/sizes (default: on)' . getLineEnding() .
+		'                             (Recommended for servers with many tables)' . getLineEnding() .
+		'      --checkversion       Check for updates to MySQLTuner (default: don\'t check)' . getLineEnding() .
+		'      --forcemem <size>    Amount of RAM installed in megabytes' . getLineEnding() .
+		'      --forceswap <size>   Amount of swap memory configured in megabytes' . getLineEnding() .
+		getLineEnding() .
+		'   Output Options:' . getLineEnding() .
+		'      --nogood             Remove OK responses' . getLineEnding() .
+		'      --nobad              Remove negative/suggestion responses' . getLineEnding() .
+		'      --noinfo             Remove informational responses' . getLineEnding() .
+		'      --nocolor            Don\'t print output in color' . getLineEnding() .
+		getLineEnding());
+}
