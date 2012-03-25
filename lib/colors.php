@@ -19,23 +19,23 @@ $colors = array(
 		),
 );
 
+/**
+ * Returns proper color coding based on current system/usage of PHP
+ * @param string $color
+ */
 function getColor($color) {
-	global $colors;
+	global $colors, $opts;
 	
-	$os = strtoupper(substr(PHP_OS, 0, 3));
-	$web = (PHP_SAPI !== "cli");
-	
-	if(($os === "WIN") && !($web))
+	if ($opts['nocolor'])
 		return;
 	
-	if(($os === "LIN") && !($web))
-		$system = 'nix';
+	$sys = getSys();
 	
-	if(!isset($system) && ($web))
-		$system = 'web';
+	if($sys === 'lin')
+		$sys = 'nix';
 	
 	if(!isset($colors[$color]))
 		return;
 
-	return($colors[$color][$system]);
+	return($colors[$color][$sys]);
 }

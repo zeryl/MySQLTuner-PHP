@@ -1,21 +1,33 @@
 <?
 
 /**
+ * Returns system information
+ * @return string
+ */
+function getSys() {
+	$os = strtolower(substr(PHP_OS, 0, 3));
+	$web = strtolower(PHP_SAPI) !== "cli";
+	
+	if ($web)
+		return 'web';
+	else
+		return $os;
+}
+
+/**
  * Returns Line Ending character(s) based on current usage of PHP
  * @return string
  */
 function getLineEnding() {
-	$os = strtoupper(substr(PHP_OS, 0, 3));
-	$web = (PHP_SAPI !== "cli");
+	$sys = getSys();
 	
-	if (($os === "WIN") && !($web))
+	if ($sys === 'web')
+		return "<br />";
+	
+	if ($sys === "win")
 		return "\r\n";
 	
-	if (($os === "LIN") && !($web))
-		return "\n";
-	
-	if ($web)
-		return "<br />";
+	return "\n";
 }
 
 /**
@@ -89,7 +101,7 @@ function pretty_uptime($uptime) {
 	$hours = (int) (($uptime % 86400) / (3600));
 	$days = (int) ($uptime / (86400));
 	
-	if($days > 0)
+	if ($days > 0)
 		return "${days}d ${hours}h ${minutes}m ${seconds}s";
 	elseif ($hours > 0)
 		return "${hours}h ${minutes}m ${seconds}s";
@@ -97,4 +109,65 @@ function pretty_uptime($uptime) {
 		return "${minutes}m ${seconds}s";
 	else
 		return "${seconds}s";
+}
+
+/**
+ * Parses command line options
+ * @source http://pwfisher.com/nucleus/index.php?itemid=45
+ * @param array $argv
+ */
+function parseArgs($argv) {
+	array_shift($argv);
+	$o = array();
+	foreach ( $argv as $a ) {
+		if (substr($a, 0, 2) == '--') {
+			$eq = strpos($a, '=');
+			if ($eq !== false) {
+				$o[substr($a, 2, $eq - 2)] = substr($a, $eq + 1);
+			}
+			else {
+				$k = substr($a, 2);
+				if (!isset($o[$k])) {
+					$o[$k] = true;
+				}
+			}
+		}
+		else if (substr($a, 0, 1) == '-') {
+			if (substr($a, 2, 1) == '=') {
+				$o[substr($a, 1, 1)] = substr($a, 3);
+			}
+			else {
+				foreach ( str_split(substr($a, 1)) as $k ) {
+					if (!isset($o[$k])) {
+						$o[$k] = true;
+					}
+				}
+			}
+		}
+		else {
+			$o[] = $a;
+		}
+	}
+	return $o;
+}
+
+/**
+ * Loads options into options array, based on command line parms, or get/post params
+ */
+function loadOpts() {
+	global $argv, $opts;
+	
+	if(isset($argv)) {
+		foreach(parseArgs($argv) as $key => $value) {
+			if(isset($opts[$key]))
+				$opts[$key] = $value;
+		}
+	}
+
+	if(isset($_REQUEST)) {
+		foreach($_REQUEST as $key => $value) {
+			if(isset($opts[$key]))
+				$opts[$key] = $value;
+		}
+	}
 }
