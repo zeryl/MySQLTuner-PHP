@@ -112,9 +112,10 @@ function pretty_uptime($uptime) {
 }
 
 /**
- * Parses command line options
- * @source http://pwfisher.com/nucleus/index.php?itemid=45
- * @param array $argv
+ * parseArgs Command Line Interface (CLI) utility function.
+ * @usage               $args = parseArgs($_SERVER['argv']);
+ * @author              Patrick Fisher <patrick@pwfisher.com>
+ * @source              https://github.com/pwfisher/CommandLine.php
  */
 function parseArgs($argv) {
 	array_shift($argv);
